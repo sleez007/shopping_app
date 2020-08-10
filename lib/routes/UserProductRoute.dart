@@ -6,34 +6,50 @@ import 'package:shopping_app/widgets/AppDrawer.dart';
 import 'package:shopping_app/widgets/UserProductItem.dart';
 
 class UserProductRoute extends StatelessWidget {
-
-
   static const routeName = '/user-product';
+
+  Future<void> _refreshProducts(BuildContext context) async{
+    await Provider.of<ProductsProvider>(context, listen: false).fetchAndSetProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
-
     final productData = Provider.of<ProductsProvider>(context);
     return Scaffold(
-      drawer: AppDrawer() ,
-      appBar: AppBar(title: const Text('Your product'),
-      actions: <Widget>[
-        IconButton(icon: const Icon(Icons.add), onPressed: (){
-          Navigator.of(context).pushNamed(EditProductRoute.routeName);
-        },)
-      ],
+      drawer: AppDrawer(),
+      appBar: AppBar(
+        title: const Text('Your product'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context).pushNamed(EditProductRoute.routeName);
+            },
+          )
+        ],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(8),
-        child: ListView.builder(
-            itemCount: productData.items.length,
-            itemBuilder: (_, index)=>Column(
-              children: <Widget>[
-                UserProductItem(title: productData.items[index].title,imageUrl: productData.items[index].imageUrl,id: productData.items[index].id),
-                Divider()
-              ],
-            )
+      body: RefreshIndicator(
+        onRefresh: ()=> _refreshProducts(context),
+        child: Padding(
+          padding: EdgeInsets.all(8),
+          child: ListView.builder(
+              itemCount: productData.items.length,
+              itemBuilder: (_, index) => Column(
+                children: <Widget>[
+                  UserProductItem(
+                      title: productData.items[index].title,
+                      imageUrl: productData.items[index].imageUrl,
+                      id: productData.items[index].id),
+                  Divider()
+                ],
+              )),
         ),
       ),
     );
   }
 }
+
+//class _UserProductRouteState extends State<UserProductRoute> {
+//
+//
+//}
