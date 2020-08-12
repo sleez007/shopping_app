@@ -15,8 +15,7 @@ class _EditProductRouteState extends State<EditProductRoute> {
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
-  var _editedProduct =
-      Product(id: null, title: '', price: 0, description: '', imageUrl: '');
+  var _editedProduct = Product(id: null, title: '', price: 0, description: '', imageUrl: '');
   var _isLoading = false;
   var _isInit = true;
 
@@ -60,7 +59,7 @@ class _EditProductRouteState extends State<EditProductRoute> {
           if (_editedProduct.id != null) {
             await  Provider.of<ProductsProvider>(context, listen: false)
                 .updateProduct(_editedProduct.id, _editedProduct);
-            Navigator.of(context).pop();
+
           }else{
             await Provider.of<ProductsProvider>(context, listen: false)
                 .addProduct(_editedProduct);

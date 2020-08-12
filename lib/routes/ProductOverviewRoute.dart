@@ -34,7 +34,6 @@ class ProductOverviewState extends State<ProductOverviewRoute> {
           _isLoading = false;
         });
       });
-
       _isInit = false;
     }
   }

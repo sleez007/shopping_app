@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/providers/Auth.dart';
 import 'package:shopping_app/routes/OrdersRoute.dart';
 import 'package:shopping_app/routes/UserProductRoute.dart';
-
+import 'package:provider/provider.dart';
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,12 @@ class AppDrawer extends StatelessWidget {
         Divider(),
         ListTile(leading: Icon(Icons.edit), title: Text('Manage products'), onTap: (){
           Navigator.of(context).pushReplacementNamed(UserProductRoute.routeName);
+        },),
+        Divider(),
+        ListTile(leading: Icon(Icons.power_settings_new), title: Text('Logout'), onTap: (){
+          Navigator.of(context).pop();
+          Navigator.of(context).pushReplacementNamed('/');
+          Provider.of<Auth>(context, listen: false).logout();
         },)
       ],),
     );

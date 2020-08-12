@@ -14,15 +14,20 @@ class OrderItem {
       {@required this.id,
       @required this.amount,
       @required this.products,
-      @required this.dateTime});
+      @required this.dateTime
+      });
 }
 
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
   List<OrderItem> get orders => [..._orders];
+  final String authToken ;
+  final String userId;
+
+  Orders(this.authToken, this._orders, this.userId);
 
   Future<void>  fetchAndSetOrders() async{
-    final url = 'https://my-flutter-ecommerce.firebaseio.com/orders.json';
+    final url = 'https://my-flutter-ecommerce.firebaseio.com/orders/$userId.json?auth=$authToken';
     final response = await http.get(url);
     final List<OrderItem>  loadedOrders = [];
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -45,7 +50,7 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> addOrder(List<CartItem> cartProducts, double total )async{
-    final url = 'https://my-flutter-ecommerce.firebaseio.com/orders.json';
+    final url = 'https://my-flutter-ecommerce.firebaseio.com/orders/$userId.json?auth=$authToken';
     final dateNow = DateTime.now().toIso8601String();
      final response = await http.post(url, body:  json.encode({
       'amount': total,
