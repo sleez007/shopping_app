@@ -15,24 +15,40 @@ class ProductDetailRoute extends StatelessWidget {
     //setting listen to false prevents updates when a change is made to the data
     final product = Provider.of<ProductsProvider>(context).findById(id);
     return Scaffold(
-      appBar: AppBar(title: Text(product.title),),
-      body: SingleChildScrollView(
-        child:Column(
-          children: <Widget>[
-            Container(
-              height: 300,
-              child: Image.network(product.imageUrl, fit: BoxFit.cover,),
-              width: double.infinity,
+     // appBar: AppBar(title: Text(product.title),),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            expandedHeight:300 ,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(product.title),
+              background: Hero(
+                  tag: product.id,
+                  child: Image.network(product.imageUrl, fit: BoxFit.cover,)
+              ),
             ),
-            SizedBox(height: 10,),
-            Text('\$${product.price}',style: TextStyle(color: Colors.grey, fontSize: 20),),
-            SizedBox(height: 10,),
-           Container(
-             padding: EdgeInsets.symmetric(horizontal: 10),
-             child:  Text(product.description, textAlign: TextAlign.center,softWrap: true,),
-           )
-          ],
-        ),
+          ),
+          SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  Column(
+                    children: <Widget>[
+                      SizedBox(height: 10,),
+                      Text('\$${product.price}',style: TextStyle(color: Colors.grey, fontSize: 20),),
+                      SizedBox(height: 10,),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child:  Text(product.description, textAlign: TextAlign.center,softWrap: true,),
+                      ),
+                      SizedBox(height: 800,)
+                    ],
+                  ),
+                ]
+              )
+          )
+        ],
+
       )
 
     );
